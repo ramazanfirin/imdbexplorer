@@ -1,0 +1,14 @@
+entity Person{
+     name String required
+     index String
+     status RecordStatus
+     afid AnyBlob
+	 insert Instant
+	 path String
+}
+
+enum RecordStatus {
+   NO_FACE_DETECTED, NO_AFID_DETECTED,PROCESSED
+}
+
+paginate Person with pagination 

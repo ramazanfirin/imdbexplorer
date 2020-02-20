@@ -1,0 +1,10 @@
+{
+    "imdbexplorerApp": {
+        "RecordStatus" : {
+            "null": "",
+            "NO_FACE_DETECTED": "NO_FACE_DETECTED",
+            "NO_AFID_DETECTED": "NO_AFID_DETECTED",
+            "PROCESSED": "PROCESSED"
+        }
+    }
+}

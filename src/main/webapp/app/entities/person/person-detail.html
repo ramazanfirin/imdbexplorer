@@ -1,0 +1,46 @@
+
+<div>
+    <h2><span data-translate="imdbexplorerApp.person.detail.title">Person</span> {{vm.person.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="imdbexplorerApp.person.name">Name</span></dt>
+        <dd>
+            <span>{{vm.person.name}}</span>
+        </dd>
+        <dt><span data-translate="imdbexplorerApp.person.index">Index</span></dt>
+        <dd>
+            <span>{{vm.person.index}}</span>
+        </dd>
+        <dt><span data-translate="imdbexplorerApp.person.status">Status</span></dt>
+        <dd>
+            <span data-translate="{{'imdbexplorerApp.RecordStatus.' + vm.person.status}}">{{vm.person.status}}</span>
+        </dd>
+        <dt><span data-translate="imdbexplorerApp.person.afid">Afid</span></dt>
+        <dd>
+            <div ng-if="vm.person.afid">
+                <a ng-click="vm.openFile(vm.person.afidContentType, vm.person.afid)" data-translate="entity.action.open">open</a>
+                {{vm.person.afidContentType}}, {{vm.byteSize(vm.person.afid)}}
+            </div>
+        </dd>
+        <dt><span data-translate="imdbexplorerApp.person.insert">Insert</span></dt>
+        <dd>
+            <span>{{vm.person.insert | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="imdbexplorerApp.person.path">Path</span></dt>
+        <dd>
+            <span>{{vm.person.path}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="person-detail.edit({id:vm.person.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>
