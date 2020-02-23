@@ -1,0 +1,24 @@
+{
+    "imdbexplorerApp": {
+        "matchQuery" : {
+            "home": {
+                "title": "Match Queries",
+                "createLabel": "Create a new Match Query",
+                "createOrEditLabel": "Create or edit a Match Query"
+            },
+            "created": "A new Match Query is created with identifier {{ param }}",
+            "updated": "A Match Query is updated with identifier {{ param }}",
+            "deleted": "A Match Query is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Match Query {{ id }}?"
+            },
+            "detail": {
+                "title": "Match Query"
+            },
+            "image": "Image",
+            "url": "Url",
+            "result": "Result",
+            "person": "Person"
+        }
+    }
+}

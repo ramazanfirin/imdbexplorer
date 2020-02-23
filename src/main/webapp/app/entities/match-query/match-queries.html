@@ -1,0 +1,73 @@
+<div>
+    <h2 data-translate="imdbexplorerApp.matchQuery.home.title">Match Queries</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="match-query.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="imdbexplorerApp.matchQuery.home.createLabel">
+                        Create new Match Query
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="image"><span data-translate="imdbexplorerApp.matchQuery.image">Image</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="url"><span data-translate="imdbexplorerApp.matchQuery.url">Url</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="result"><span data-translate="imdbexplorerApp.matchQuery.result">Result</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="person.id"><span data-translate="imdbexplorerApp.matchQuery.person">Person</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="matchQuery in vm.matchQueries track by matchQuery.id">
+                    <td><a ui-sref="match-query-detail({id:matchQuery.id})">{{matchQuery.id}}</a></td>
+                    <td>
+                        <a ng-if="matchQuery.image" ng-click="vm.openFile(matchQuery.imageContentType, matchQuery.image)">
+                            <img data-ng-src="{{'data:' + matchQuery.imageContentType + ';base64,' + matchQuery.image}}" style="max-height: 30px;" alt="matchQuery image"/>
+                        </a>
+                        <span ng-if="matchQuery.image">{{matchQuery.imageContentType}}, {{vm.byteSize(matchQuery.image)}}</span>
+                    </td>
+                    <td>{{matchQuery.url}}</td>
+                    <td>{{matchQuery.result}}</td>
+                    <td>
+                        <a ui-sref="person-detail({id:matchQuery.person.id})">{{matchQuery.person.id}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="match-query-detail({id:matchQuery.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="match-query.edit({id:matchQuery.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="match-query.delete({id:matchQuery.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+        <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
+    </div>
+</div>

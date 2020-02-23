@@ -6,9 +6,18 @@ entity Person{
 	 insert Instant
 	 path String
 }
+entity MatchQuery{
+	image ImageBlob
+	url String
+	result Float
+}
+
+relationship ManyToOne {
+    MatchQuery{person} to Person
+}
 
 enum RecordStatus {
    NO_FACE_DETECTED, NO_AFID_DETECTED,PROCESSED
 }
 
-paginate Person with pagination 
+paginate Person,MatchQuery with pagination 

@@ -1,0 +1,40 @@
+
+<div>
+    <h2><span data-translate="imdbexplorerApp.matchQuery.detail.title">Match Query</span> {{vm.matchQuery.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="imdbexplorerApp.matchQuery.image">Image</span></dt>
+        <dd>
+            <div ng-if="vm.matchQuery.image">
+                <a ng-click="vm.openFile(vm.matchQuery.imageContentType, vm.matchQuery.image)">
+                    <img data-ng-src="{{'data:' + vm.matchQuery.imageContentType + ';base64,' + vm.matchQuery.image}}" style="max-width: 100%;" alt="matchQuery image"/>
+                </a>
+                {{vm.matchQuery.imageContentType}}, {{vm.byteSize(vm.matchQuery.image)}}
+            </div>
+        </dd>
+        <dt><span data-translate="imdbexplorerApp.matchQuery.url">Url</span></dt>
+        <dd>
+            <span>{{vm.matchQuery.url}}</span>
+        </dd>
+        <dt><span data-translate="imdbexplorerApp.matchQuery.result">Result</span></dt>
+        <dd>
+            <span>{{vm.matchQuery.result}}</span>
+        </dd>
+        <dt><span data-translate="imdbexplorerApp.matchQuery.person">Person</span></dt>
+        <dd>
+            <a ui-sref="person-detail({id:vm.matchQuery.person.id})">{{vm.matchQuery.person.id}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="match-query-detail.edit({id:vm.matchQuery.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

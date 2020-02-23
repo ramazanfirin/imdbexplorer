@@ -121,6 +121,14 @@ public class AyonixEngineService{
 		 return faces;
 	}
 
+	public AyonixFace[] detectFaces(byte[] bytes) throws Exception {
+		
+		 AyonixImage img =null;
+		 img= sdk.LoadImage(bytes);
+		  
+		 AyonixFace[] faces = sdk.DetectFaces(img,48,new Rectangle(img.getWidth(), img.getHeight()));
+		 return faces;
+	}
 	
 	public AyonixFace[] detectFaceFromResizedImage(String path) throws IOException {
 		BufferedImage image = ImageIO.read(new File(path));
@@ -155,6 +163,18 @@ public class AyonixEngineService{
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			return 0;
+		}
+		
+	}
+	
+	public void match(byte[] afid1,Vector<byte[]> afids,float[] scores,int[] indexes) {
+		
+		try {
+			sdk.MatchAfids(afid1, afids, scores, indexes);
+			//return scores[0];
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			//return 0;
 		}
 		
 	}
