@@ -1,11 +1,11 @@
 package com.mastertek.web.rest;
 
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Vector;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -77,7 +77,8 @@ public class MatchQueryResource {
             throw new BadRequestAlertException("A new matchQuery cannot already have an ID", ENTITY_NAME, "idexists");
         }
         
-        compare(matchQuery);
+        //compare(matchQuery);
+        compare2(matchQuery);
         
         MatchQuery result = matchQueryRepository.save(matchQuery);
         return ResponseEntity.created(new URI("/api/match-queries/" + result.getId()))
@@ -115,6 +116,44 @@ public class MatchQueryResource {
     	
     	matchQuery.setPerson(person);
     	matchQuery.setResult(result);
+    }
+    
+    public void compare2(MatchQuery matchQuery) throws Exception {
+    	List<Person> personList = getPersonList();
+    	byte[] afid=getAfid(matchQuery);
+    	
+    	Vector<byte[]> afids  = new Vector<byte[]>();
+    	for (Iterator iterator = personList.iterator(); iterator.hasNext();) {
+			Person bs = (Person) iterator.next();
+			afids.add(bs.getAfid());
+		}
+    	
+    	float[] scores = new float[personList.size()];
+		int[] indexes = new int[personList.size()];
+		
+		Long startDate = System.currentTimeMillis();
+    	ayonixEngineService.match(afid, afids,scores,indexes);
+		Long endDate = System.currentTimeMillis();
+    	System.out.println("compare time : "+ (endDate - startDate));
+
+    	float maxScore =0f;
+    	int index=0;
+    	
+    	for (int i = 0; i < scores.length; i++) {
+			if(scores[i]>maxScore) {
+				maxScore = scores[i];
+				index= i;
+			}
+		}
+    	
+    	Long endDate2 = System.currentTimeMillis();
+    	System.out.println("compare time : "+ (endDate2 - startDate));
+
+    	matchQuery.setPerson(personList.get(index));
+    	matchQuery.setResult(maxScore);
+    	System.out.println("bitti");
+    	
+    	
     }
     
     public AyonixFace getFace(MatchQuery matchQuery) throws Exception {

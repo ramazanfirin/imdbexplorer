@@ -54,6 +54,23 @@
 <!--                 <option value=""></option> -->
 <!--             </select> -->
 <!--         </div> -->
+
+	<div class="row">
+		<div class="col-md-4">
+                   <img ng-if="!vm.result.url" data-ng-src="{{'data:' + matchQuery.imageContentType + ';base64,' + vm.result.image}}" width="300" height="300" alt="matchQuery image"/>
+        		   <img ng-if="vm.result.url" width="300" height="300" ng-src="{{vm.result.url}}">
+    
+       </div>
+       <div class="col-md-2">
+   				<center>{{vm.result.result}}</center> 
+   				 <center>{{vm.result.person.name}}</center>
+       </div>
+       <div class="col-md-4">
+   				<img  width="300" height="300" ng-src="{{vm.result.person.path}}">
+       </div>
+	</div>
+
+
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">

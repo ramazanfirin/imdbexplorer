@@ -17,6 +17,8 @@
         vm.save = save;
         vm.people = Person.query();
 
+        vm.result;
+        
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
@@ -38,6 +40,7 @@
             $scope.$emit('imdbexplorerApp:matchQueryUpdate', result);
             //$uibModalInstance.close(result);
             vm.isSaving = false;
+            vm.result = result;
         }
 
         function onSaveError () {
