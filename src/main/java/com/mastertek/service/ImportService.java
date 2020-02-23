@@ -38,9 +38,9 @@ public class ImportService {
     	File f = new File(applicationProperties.getFilePath());
         System.out.println("Reading files using Apache IO:");
         List<String> lines = FileUtils.readLines(f, "UTF-8");
-
+        System.out.println(lines.size());
         Long startPoint = personRepository.count();
-        ExecutorService executor = Executors.newFixedThreadPool(500);
+        ExecutorService executor = Executors.newFixedThreadPool(12);
         long countTemp = 0;
         for (int i = startPoint.intValue(); i < lines.size(); i++) {
 			String line = lines.get(i);
