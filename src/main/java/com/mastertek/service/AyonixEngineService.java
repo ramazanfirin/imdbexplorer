@@ -175,6 +175,7 @@ public class AyonixEngineService{
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			//return 0;
+			e.printStackTrace();
 		}
 		
 	}

@@ -1,11 +1,13 @@
 package com.mastertek.web.rest;
 
 import java.net.URI;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Vector;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -30,6 +32,7 @@ import com.mastertek.domain.Person;
 import com.mastertek.repository.MatchQueryRepository;
 import com.mastertek.repository.PersonRepository;
 import com.mastertek.service.AyonixEngineService;
+import com.mastertek.service.MacthingThread;
 import com.mastertek.web.rest.errors.BadRequestAlertException;
 import com.mastertek.web.rest.util.HeaderUtil;
 import com.mastertek.web.rest.util.PaginationUtil;
@@ -78,7 +81,8 @@ public class MatchQueryResource {
         }
         
         //compare(matchQuery);
-        compare2(matchQuery);
+        //compare2(matchQuery);
+        compare3(matchQuery);
         
         MatchQuery result = matchQueryRepository.save(matchQuery);
         return ResponseEntity.created(new URI("/api/match-queries/" + result.getId()))
@@ -119,7 +123,7 @@ public class MatchQueryResource {
     }
     
     public void compare2(MatchQuery matchQuery) throws Exception {
-    	List<Person> personList = getPersonList();
+    	List<Person> personList = getPersonList().subList(0, 250000);
     	byte[] afid=getAfid(matchQuery);
     	
     	Vector<byte[]> afids  = new Vector<byte[]>();
@@ -128,8 +132,13 @@ public class MatchQueryResource {
 			afids.add(bs.getAfid());
 		}
     	
-    	float[] scores = new float[personList.size()];
-		int[] indexes = new int[personList.size()];
+    	
+//    	afids.addAll(afids);
+//    	afids.addAll(afids);
+    	
+    	afids.size();
+    	float[] scores = new float[afids.size()];
+		int[] indexes = new int[afids.size()];
 		
 		Long startDate = System.currentTimeMillis();
     	ayonixEngineService.match(afid, afids,scores,indexes);
@@ -155,6 +164,39 @@ public class MatchQueryResource {
     	
     	
     }
+    
+    public void compare3(MatchQuery matchQuery) throws Exception {
+    	List<Person> personList = getPersonList();
+    	byte[] afid=getAfid(matchQuery);
+    	
+    	Vector<byte[]> afids  = new Vector<byte[]>();
+    	for (Iterator iterator = personList.iterator(); iterator.hasNext();) {
+			Person bs = (Person) iterator.next();
+			afids.add(bs.getAfid());
+		}
+    	
+    	afids.addAll(afids);
+    	afids.addAll(afids);
+    	
+    	Long startDate = System.currentTimeMillis();
+    	
+    	ExecutorService executor = Executors.newFixedThreadPool(6);
+        long countTemp = 0;
+        for (int i = 0 ; i < 6; i++) {
+        	MacthingThread worker = new MacthingThread(ayonixEngineService,afid,afids.subList(500000*i, 500000*(i+1)));
+			executor.execute(worker);
+			countTemp++;
+			System.out.println("Matching thread -->" + i + ",count-->" + countTemp);
+        }
+        
+        executor.shutdown();
+		executor.awaitTermination(30, TimeUnit.SECONDS);
+		
+		Long endDate = System.currentTimeMillis();
+		System.out.println("bitti-"+(endDate-startDate));
+		System.out.println("sdsdsdsd");
+    }
+    
     
     public AyonixFace getFace(MatchQuery matchQuery) throws Exception {
     	AyonixFace[] faces=null;
